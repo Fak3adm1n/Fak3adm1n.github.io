@@ -102,5 +102,5 @@ theme: cactus
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: https://github.com/fak3adm1n/fak3adm1n.github.io
+  repo: git@github.com:fak3adm1n/fak3adm1n.github.io
   branch: master
