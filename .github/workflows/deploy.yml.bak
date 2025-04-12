@@ -3,7 +3,7 @@ name: Deploy Hexo Blog
 on:
   push:
     branches:
-      - master  # 或者你使用的其他分支名称
+      - main  # 或者你使用的其他分支名称
 
 jobs:
   build:
