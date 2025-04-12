@@ -103,4 +103,4 @@ theme: cactus
 deploy:
   type: git
   repo: git@github.com:fak3adm1n/fak3adm1n.github.io
-  branch: master
+  branch: gh-pages
