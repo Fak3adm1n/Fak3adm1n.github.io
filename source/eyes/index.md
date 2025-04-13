@@ -3,14 +3,7 @@ title: 4u
 date: 2025-04-13 20:12:33
 ---
 
-
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>恋字</title>
-    <style>
+<style>
         body {
             background-color: black;
             display: flex;
@@ -50,10 +43,9 @@ date: 2025-04-13 20:12:33
             margin-top: 100px;
             background-color: #ffe392;
             font-size: 30px;
-            color: #white;
+            color: white;
         }
     </style>
-</head>
 
 <body>
     <div id="phrase">
@@ -94,6 +86,9 @@ date: 2025-04-13 20:12:33
         }
         // 为按钮添加点击事件监听器，点击按钮时生成新的短语
         generateBtn.addEventListener('click', generatePhrase);
+    </script>
+</body>
+ateBtn.addEventListener('click', generatePhrase);
     </script>
 </body>
 
