@@ -1,6 +1,7 @@
 ---
 title: 4u
 date: 2025-04-13 20:12:33
+layout: false
 ---
 
 <style>
