@@ -24,12 +24,12 @@ nav:
 busuanzi:
  enable: true
 
-utterances:
-  enabled: true
-  repo: fak3adm1n/blog-comments
-  issue_term: pathname
-  label: utteranc
-  theme: github-dark
+# utterances:
+#  enabled: true
+#  repo: fak3adm1n/blog-comments
+#  issue_term: pathname
+#  label: utteranc
+#  theme: github-dark
 
 # Links to your social media accounts.
 # The 'icon' keys should correspond to Fontawesome icon names
