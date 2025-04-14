@@ -14,7 +14,7 @@
 <meta property="og:description" content="表意有限，越是符合语言逻辑，越是偏离本来。因为潜意识需要被意识化。  Tags精神分析 古神秘学 玄学 冥想 占卜 宗教三岛由纪夫 川端康成 Linux 六爻 幻想 睡觉  手积青词三百句，天寒地冻我自愉。来年饱食神仙字，不枉此生作蠹鱼。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-11T13:12:33.000Z">
-<meta property="article:modified_time" content="2025-04-14T16:08:18.919Z">
+<meta property="article:modified_time" content="2025-04-14T16:11:16.426Z">
 <meta property="article:author" content="朝兮未闻道">
 <meta name="twitter:card" content="summary">
     
@@ -92,6 +92,26 @@
    -->
     </ul>
   </div>
+
+<!-- 一言 API：随机语录 -->
+<div id="hitokoto" style="text-align:center; margin: 20px 0; font-style: italic;">
+  <small><span id="hitokoto_text">加载中...</span></small>
+</div>
+
+<script>
+  fetch('https://v1.hitokoto.cn?encode=json')
+    .then(response => response.json())
+    .then(data => {
+      const text = data.hitokoto;
+      const from = data.from || '佚名';
+      const fromWho = data.from_who ? ` · ${data.from_who}` : '';
+      document.getElementById('hitokoto_text').innerText = `${text} —— ${from}${fromWho}`;
+    })
+    .catch(err => {
+      console.error('Hitokoto 获取失败：', err);
+      document.getElementById('hitokoto_text').innerText = '加载失败，请刷新重试~';
+    });
+</script>
 </header>
 
         
