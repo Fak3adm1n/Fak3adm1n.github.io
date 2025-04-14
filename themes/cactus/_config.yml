@@ -15,10 +15,11 @@ direction: ltr
 # languages/*.yml
 nav:
   home: /
-  about: /about/
-  articles: /archives/
-  Eyes: /eyes/ 
-  search: /search/
+  关于: /about/
+  文章: /archives/
+  卦: /gua/
+  恋字: /eyes/ 
+  搜索: /search/
   
 # 是否开启访问量统计功能(不蒜子)
 busuanzi:

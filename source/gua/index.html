@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>六十四卦抽卦</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .result {
+            text-align: center;
+            font-size: 60px;
+            margin-bottom: 40px;
+        }
+
+        .button {
+            padding: 15px 30px;
+            background-color: #fff;
+            color: #000;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="result" id="result">
+        <!-- 结果将显示在这里 -->
+    </div>
+    <button class="button" onclick="drawHexagram()">抽卦</button>
+
+    <script>
+        const hexagrams = [
+            "乾為天", "天地否", "天澤履", "天山遯", "天火同人", "天水訟", "天雷无妄", "天風姤",
+            "地天泰", "坤為地", "地澤臨", "地山謙", "地火明夷", "地水師", "地雷復", "地風升",
+            "澤天夬", "澤地萃", "兌為澤", "澤山咸", "澤火革", "澤水困", "澤雷隨", "澤風大過",
+            "山天大畜", "山地剝", "山澤損", "艮為山", "山火賁", "山水蒙", "山雷頤", "山風蠱",
+            "火天大有", "火地晉", "火澤睽", "火山旅", "離為火", "火水未濟", "火雷噬嗑", "火風鼎",
+            "水天需", "水地比", "水澤節", "水山蹇", "水火既濟", "坎為水", "水雷屯", "水風井",
+            "雷天大壯", "雷地豫", "雷澤歸妹", "雷山小過", "雷火豐", "雷水解", "震為雷", "雷風恒",
+            "風天小畜", "風地觀", "風澤中孚", "風山漸", "風火家人", "風水渙", "風雷益", "巽為風"
+        ];
+
+        function drawHexagram() {
+            const randomIndex = Math.floor(Math.random() * hexagrams.length);
+            const hexagram = hexagrams[randomIndex];
+
+            // 显示抽取结果
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <h2>${hexagram}</h2>
+            `;
+        }
+    </script>
+
+</body>
+</html>
