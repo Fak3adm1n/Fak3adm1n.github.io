@@ -29,4 +29,24 @@
    --><% } %>
     </ul>
   </div>
+
+<!-- 一言 API：随机语录 -->
+<div id="hitokoto" style="text-align:center; margin: 20px 0; font-style: italic;">
+  <small><span id="hitokoto_text">加载中...</span></small>
+</div>
+
+<script>
+  fetch('https://v1.hitokoto.cn?encode=json')
+    .then(response => response.json())
+    .then(data => {
+      const text = data.hitokoto;
+      const from = data.from || '佚名';
+      const fromWho = data.from_who ? ` · ${data.from_who}` : '';
+      document.getElementById('hitokoto_text').innerText = `${text} —— ${from}${fromWho}`;
+    })
+    .catch(err => {
+      console.error('Hitokoto 获取失败：', err);
+      document.getElementById('hitokoto_text').innerText = '加载失败，请刷新重试~';
+    });
+</script>
 </header>
