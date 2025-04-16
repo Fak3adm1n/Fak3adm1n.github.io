@@ -14,7 +14,7 @@ direction: ltr
 # navigation menu. Optionally, you can add translations for the 'Key' in
 # languages/*.yml
 nav:
-  home: /
+  主页: /
   关于: /about/
   文章: /archives/
   卦: /gua/

@@ -4,8 +4,10 @@ date: 2025-04-11 23:01:00
 categories:
 - 精神分析
 tags:
-- 精神分析
-- 弗洛伊德
+  - name: 精神分析
+  - slug: psychoanalyse
+  - name: 弗洛伊德
+  - slug: freud
 ---
 生存本能
 力比多是汇聚
