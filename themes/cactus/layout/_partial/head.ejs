@@ -77,18 +77,4 @@
 		</script>
 		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 	<% } %>
-    <!-- 插入到 layout/_partial/footer.ejs 或主题支持的自定义脚本区域 -->
-<script>
-  fetch('https://v1.hitokoto.cn?c=d&encode=text')
-    .then(response => response.text())
-    .then(text => {
-      const hitokotoEl = document.getElementById('hitokoto');
-      if (hitokotoEl) {
-        hitokotoEl.innerText = text;
-      }
-    });
-</script>
-
-<!-- 添加显示位置 -->
-<p id="hitokoto" style="text-align: center; margin-top: 1em; font-style: italic;">加载中...</p >
 </head>

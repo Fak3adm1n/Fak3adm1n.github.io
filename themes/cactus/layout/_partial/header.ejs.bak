@@ -29,20 +29,4 @@
    --><% } %>
     </ul>
   </div>
-  <!-- 放在 layout/_partial/footer.ejs 或其它你希望展示的地方 -->
-<div id="hitokoto-box" style="text-align: center; margin-top: 1em; font-style: italic;">
-  <span id="hitokoto">一言加载中...</span>
-</div>
-
-<script>
-  fetch('https://v1.hitokoto.cn')
-    .then(response => response.json())
-    .then(data => {
-      const hitokoto = document.getElementById('hitokoto');
-      hitokoto.innerHTML = `${data.hitokoto} —— <strong>${data.from_who || '佚名'}</strong>「${data.from}」`;
-    })
-    .catch(() => {
-      document.getElementById('hitokoto').innerText = '获取一言失败。';
-    });
-</script>
 </header>
