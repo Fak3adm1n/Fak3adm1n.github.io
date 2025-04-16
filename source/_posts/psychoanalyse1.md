@@ -5,9 +5,9 @@ categories:
 - 精神分析
 tags:
   - name: 精神分析
-  - slug: psychoanalyse
+    slug: psychoanalyse
   - name: 弗洛伊德
-  - slug: freud
+    slug: freud
 ---
 生存本能
 力比多是汇聚
