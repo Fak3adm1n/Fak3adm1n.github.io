@@ -53,20 +53,6 @@
     
 	<!-- mathjax -->
 	
-    <!-- 插入到 layout/_partial/footer.ejs 或主题支持的自定义脚本区域 -->
-<script>
-  fetch('https://v1.hitokoto.cn?c=d&encode=text')
-    .then(response => response.text())
-    .then(text => {
-      const hitokotoEl = document.getElementById('hitokoto');
-      if (hitokotoEl) {
-        hitokotoEl.innerText = text;
-      }
-    });
-</script>
-
-<!-- 添加显示位置 -->
-<p id="hitokoto" style="text-align: center; margin-top: 1em; font-style: italic;">加载中...</p >
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
@@ -102,6 +88,22 @@
    -->
     </ul>
   </div>
+  <!-- 放在 layout/_partial/footer.ejs 或其它你希望展示的地方 -->
+<div id="hitokoto-box" style="text-align: center; margin-top: 1em; font-style: italic;">
+  <span id="hitokoto">一言加载中...</span>
+</div>
+
+<script>
+  fetch('https://v1.hitokoto.cn')
+    .then(response => response.json())
+    .then(data => {
+      const hitokoto = document.getElementById('hitokoto');
+      hitokoto.innerHTML = `${data.hitokoto} —— <strong>${data.from_who || '佚名'}</strong>「${data.from}」`;
+    })
+    .catch(() => {
+      document.getElementById('hitokoto').innerText = '获取一言失败。';
+    });
+</script>
 </header>
 
         
