@@ -14,23 +14,22 @@ direction: ltr
 # navigation menu. Optionally, you can add translations for the 'Key' in
 # languages/*.yml
 nav:
-  主页: /
-  关于: /about/
-  文章: /archives/
-  卦: /gua/
-  恋字: /eyes/ 
-  搜索: /search/
+  home: /
+  about: /about/
+  articles: /archives/
+  Eyes: /eyes/ 
+  search: /search/
   
 # 是否开启访问量统计功能(不蒜子)
 busuanzi:
  enable: true
 
-# utterances:
-#  enabled: true
-#  repo: fak3adm1n/blog-comments
-#  issue_term: pathname
-#  label: utteranc
-#  theme: github-dark
+utterances:
+  enabled: true
+  repo: fak3adm1n/blog-comments
+  issue_term: pathname
+  label: utteranc
+  theme: github-dark
 
 # Links to your social media accounts.
 # The 'icon' keys should correspond to Fontawesome icon names
