@@ -177,12 +177,12 @@ disqus:
   shortname: cactus-1
 
 # Fill in your Utterances data to enable Utterances comments
-utterances:
-  enabled: false
-  repo: owner/githubrepo
-  issue_term: pathname
-  label: Comment
-  theme: github-dark
+#utterances:
+#  enabled: false
+#  repo: owner/githubrepo
+#  issue_term: pathname
+#  label: Comment
+#  theme: github-dark
 
 # Fill in your Google Analytics tracking ID to enable Google Analytics.
 google_analytics:
