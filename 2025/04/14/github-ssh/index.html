@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="GitHub SSH Key 配置与推送流程（超详细）本指南适用于首次使用 SSH Key 连接 GitHub 并推送代码，适合本地终端、iSH、Termux 等环境。  一、生成 SSH Key在终端执行以下命令（推荐 ed25519）： 1ssh-keygen -t ed25519 -C &quot;你的GitHub邮箱&quot;  如果不支持 ed25519，也可以用： 1ssh-keyg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github ssh-key配置与使用">
+<meta property="og:url" content="https://fak3adm1n.github.io/2025/04/14/github-ssh/index.html">
+<meta property="og:site_name" content="一切都是为了Xv4n">
+<meta property="og:description" content="GitHub SSH Key 配置与推送流程（超详细）本指南适用于首次使用 SSH Key 连接 GitHub 并推送代码，适合本地终端、iSH、Termux 等环境。  一、生成 SSH Key在终端执行以下命令（推荐 ed25519）： 1ssh-keygen -t ed25519 -C &quot;你的GitHub邮箱&quot;  如果不支持 ed25519，也可以用： 1ssh-keyg">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-14T16:01:00.000Z">
+<meta property="article:modified_time" content="2025-04-16T14:32:06.036Z">
+<meta property="article:author" content="朝兮未闻道">
+<meta property="article:tag" content="Github">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Github ssh-key配置与使用</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+    <!-- 插入到 layout/_partial/footer.ejs 或主题支持的自定义脚本区域 -->
+<script>
+  fetch('https://v1.hitokoto.cn?c=d&encode=text')
+    .then(response => response.text())
+    .then(text => {
+      const hitokotoEl = document.getElementById('hitokoto');
+      if (hitokotoEl) {
+        hitokotoEl.innerText = text;
+      }
+    });
+</script>
+
+<!-- 添加显示位置 -->
+<p id="hitokoto" style="text-align: center; margin-top: 1em; font-style: italic;">加载中...</p >
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/eyes/">Eyes</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/04/13/yinfu/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fak3adm1n.github.io/2025/04/14/github-ssh/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&text=Github ssh-key配置与使用"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&title=Github ssh-key配置与使用"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&is_video=false&description=Github ssh-key配置与使用"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Github ssh-key配置与使用&body=Check out this article: https://fak3adm1n.github.io/2025/04/14/github-ssh/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&title=Github ssh-key配置与使用"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&title=Github ssh-key配置与使用"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&title=Github ssh-key配置与使用"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&title=Github ssh-key配置与使用"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&name=Github ssh-key配置与使用&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fak3adm1n.github.io/2025/04/14/github-ssh/&t=Github ssh-key配置与使用"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GitHub-SSH-Key-%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%8E%A8%E9%80%81%E6%B5%81%E7%A8%8B%EF%BC%88%E8%B6%85%E8%AF%A6%E7%BB%86%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">GitHub SSH Key 配置与推送流程（超详细）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%94%9F%E6%88%90-SSH-Key"><span class="toc-number">1.1.</span> <span class="toc-text">一、生成 SSH Key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%90%AF%E5%8A%A8-ssh-agent-%E5%B9%B6%E6%B7%BB%E5%8A%A0%E7%A7%81%E9%92%A5%EF%BC%88%E5%8F%AF%E9%80%89%E4%BD%86%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">二、启动 ssh-agent 并添加私钥（可选但推荐）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%A4%8D%E5%88%B6%E5%85%AC%E9%92%A5%E5%86%85%E5%AE%B9"><span class="toc-number">1.3.</span> <span class="toc-text">三、复制公钥内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%B7%BB%E5%8A%A0%E5%85%AC%E9%92%A5%E5%88%B0-GitHub"><span class="toc-number">1.4.</span> <span class="toc-text">四、添加公钥到 GitHub</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E8%BF%9E%E6%8E%A5%E6%88%90%E5%8A%9F"><span class="toc-number">1.5.</span> <span class="toc-text">五、测试是否连接成功</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E9%85%8D%E7%BD%AE-Git-%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%EF%BC%88%E9%A6%96%E6%AC%A1%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="toc-number">1.6.</span> <span class="toc-text">六、配置 Git 用户信息（首次使用）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%A3%80%E6%9F%A5%E6%88%96%E4%BF%AE%E6%94%B9%E8%BF%9C%E7%A8%8B%E5%9C%B0%E5%9D%80%E4%B8%BA-SSH"><span class="toc-number">1.7.</span> <span class="toc-text">七、检查或修改远程地址为 SSH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E6%8E%A8%E9%80%81%E4%BB%A3%E7%A0%81%E5%88%B0-GitHub"><span class="toc-number">1.8.</span> <span class="toc-text">八、推送代码到 GitHub</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E5%90%8E%E7%BB%AD%E4%BD%BF%E7%94%A8%EF%BC%88%E6%97%A0%E9%9C%80%E6%AF%8F%E6%AC%A1%E8%BE%93%E5%85%A5%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%EF%BC%89"><span class="toc-number">1.9.</span> <span class="toc-text">九、后续使用（无需每次输入用户名密码）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%8A%A0%EF%BC%9A%E4%B8%80%E9%94%AE%E6%8E%A8%E9%80%81%E8%84%9A%E6%9C%AC%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">1.10.</span> <span class="toc-text">附加：一键推送脚本（可选）</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Github ssh-key配置与使用
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">朝兮未闻道</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-04-14T16:01:00.000Z" class="dt-published" itemprop="datePublished">2025-04-15</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="" href="&#x2F;categories&#x2F;%E7%BD%91%E7%BB%9C%E7%9B%B8%E5%85%B3&#x2F;">网络相关</a >
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Github/" rel="tag">Github</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="GitHub-SSH-Key-配置与推送流程（超详细）"><a href="#GitHub-SSH-Key-配置与推送流程（超详细）" class="headerlink" title="GitHub SSH Key 配置与推送流程（超详细）"></a>GitHub SSH Key 配置与推送流程（超详细）</h1><p>本指南适用于首次使用 SSH Key 连接 GitHub 并推送代码，适合本地终端、iSH、Termux 等环境。</p>
+<hr>
+<h2 id="一、生成-SSH-Key"><a href="#一、生成-SSH-Key" class="headerlink" title="一、生成 SSH Key"></a>一、生成 SSH Key</h2><p>在终端执行以下命令（推荐 ed25519）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t ed25519 -C <span class="string">&quot;你的GitHub邮箱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果不支持 ed25519，也可以用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C <span class="string">&quot;你的GitHub邮箱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>一路回车，默认保存在：</p>
+<ul>
+<li>私钥：<code>~/.ssh/id_ed25519</code>  </li>
+<li>公钥：<code>~/.ssh/id_ed25519.pub</code></li>
+</ul>
+<hr>
+<h2 id="二、启动-ssh-agent-并添加私钥（可选但推荐）"><a href="#二、启动-ssh-agent-并添加私钥（可选但推荐）" class="headerlink" title="二、启动 ssh-agent 并添加私钥（可选但推荐）"></a>二、启动 ssh-agent 并添加私钥（可选但推荐）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> <span class="string">&quot;<span class="subst">$(ssh-agent -s)</span>&quot;</span></span><br><span class="line">ssh-add ~/.ssh/id_ed25519</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="三、复制公钥内容"><a href="#三、复制公钥内容" class="headerlink" title="三、复制公钥内容"></a>三、复制公钥内容</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~/.ssh/id_ed25519.pub</span><br></pre></td></tr></table></figure>
+
+<p>复制终端输出的一整行。</p>
+<hr>
+<h2 id="四、添加公钥到-GitHub"><a href="#四、添加公钥到-GitHub" class="headerlink" title="四、添加公钥到 GitHub"></a>四、添加公钥到 GitHub</h2><ol>
+<li>登录 GitHub  </li>
+<li>右上角头像 → <code>Settings</code>  </li>
+<li>左侧菜单 → <code>SSH and GPG keys</code>  </li>
+<li>点击 <code>New SSH key</code>  </li>
+<li>填名称、粘贴公钥 → <code>Add SSH Key</code></li>
+</ol>
+<hr>
+<h2 id="五、测试是否连接成功"><a href="#五、测试是否连接成功" class="headerlink" title="五、测试是否连接成功"></a>五、测试是否连接成功</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>成功时输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hi your-username! You&#x27;ve successfully authenticated, but GitHub does not provide shell access.</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、配置-Git-用户信息（首次使用）"><a href="#六、配置-Git-用户信息（首次使用）" class="headerlink" title="六、配置 Git 用户信息（首次使用）"></a>六、配置 Git 用户信息（首次使用）</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;你的GitHub用户名&quot;</span></span><br><span class="line">git config --global user.email <span class="string">&quot;你的GitHub邮箱&quot;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="七、检查或修改远程地址为-SSH"><a href="#七、检查或修改远程地址为-SSH" class="headerlink" title="七、检查或修改远程地址为 SSH"></a>七、检查或修改远程地址为 SSH</h2><p>查看远程地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote -v</span><br></pre></td></tr></table></figure>
+
+<p>输出应为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">origin  git@github.com:your-username/your-repo.git (fetch)</span><br></pre></td></tr></table></figure>
+
+<p>如果是 https，则修改为 SSH：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote set-url origin git@github.com:your-username/your-repo.git</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="八、推送代码到-GitHub"><a href="#八、推送代码到-GitHub" class="headerlink" title="八、推送代码到 GitHub"></a>八、推送代码到 GitHub</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;提交信息&quot;</span></span><br><span class="line">git push origin main  <span class="comment"># 或 git push origin master，视分支而定</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="九、后续使用（无需每次输入用户名密码）"><a href="#九、后续使用（无需每次输入用户名密码）" class="headerlink" title="九、后续使用（无需每次输入用户名密码）"></a>九、后续使用（无需每次输入用户名密码）</h2><p>以后你只需运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&quot;更新内容&quot;</span></span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<p>即可自动推送到 GitHub。</p>
+<hr>
+<h2 id="附加：一键推送脚本（可选）"><a href="#附加：一键推送脚本（可选）" class="headerlink" title="附加：一键推送脚本（可选）"></a>附加：一键推送脚本（可选）</h2><p>在 <code>.bashrc</code> 或 <code>.zshrc</code> 中添加：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> pushblog=<span class="string">&#x27;git add . &amp;&amp; git commit -m &quot;更新博客&quot; &amp;&amp; git push&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>之后在终端直接输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pushblog</span><br></pre></td></tr></table></figure>
+
+<p>即可一键提交并推送更新。</p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/eyes/">Eyes</a></li>
+        
+          <li><a href="/search/">Search</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#GitHub-SSH-Key-%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%8E%A8%E9%80%81%E6%B5%81%E7%A8%8B%EF%BC%88%E8%B6%85%E8%AF%A6%E7%BB%86%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">GitHub SSH Key 配置与推送流程（超详细）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%94%9F%E6%88%90-SSH-Key"><span class="toc-number">1.1.</span> <span class="toc-text">一、生成 SSH Key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%90%AF%E5%8A%A8-ssh-agent-%E5%B9%B6%E6%B7%BB%E5%8A%A0%E7%A7%81%E9%92%A5%EF%BC%88%E5%8F%AF%E9%80%89%E4%BD%86%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">二、启动 ssh-agent 并添加私钥（可选但推荐）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%A4%8D%E5%88%B6%E5%85%AC%E9%92%A5%E5%86%85%E5%AE%B9"><span class="toc-number">1.3.</span> <span class="toc-text">三、复制公钥内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%B7%BB%E5%8A%A0%E5%85%AC%E9%92%A5%E5%88%B0-GitHub"><span class="toc-number">1.4.</span> <span class="toc-text">四、添加公钥到 GitHub</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E6%B5%8B%E8%AF%95%E6%98%AF%E5%90%A6%E8%BF%9E%E6%8E%A5%E6%88%90%E5%8A%9F"><span class="toc-number">1.5.</span> <span class="toc-text">五、测试是否连接成功</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E9%85%8D%E7%BD%AE-Git-%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%EF%BC%88%E9%A6%96%E6%AC%A1%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="toc-number">1.6.</span> <span class="toc-text">六、配置 Git 用户信息（首次使用）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E6%A3%80%E6%9F%A5%E6%88%96%E4%BF%AE%E6%94%B9%E8%BF%9C%E7%A8%8B%E5%9C%B0%E5%9D%80%E4%B8%BA-SSH"><span class="toc-number">1.7.</span> <span class="toc-text">七、检查或修改远程地址为 SSH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81%E6%8E%A8%E9%80%81%E4%BB%A3%E7%A0%81%E5%88%B0-GitHub"><span class="toc-number">1.8.</span> <span class="toc-text">八、推送代码到 GitHub</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E5%90%8E%E7%BB%AD%E4%BD%BF%E7%94%A8%EF%BC%88%E6%97%A0%E9%9C%80%E6%AF%8F%E6%AC%A1%E8%BE%93%E5%85%A5%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%EF%BC%89"><span class="toc-number">1.9.</span> <span class="toc-text">九、后续使用（无需每次输入用户名密码）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%8A%A0%EF%BC%9A%E4%B8%80%E9%94%AE%E6%8E%A8%E9%80%81%E8%84%9A%E6%9C%AC%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">1.10.</span> <span class="toc-text">附加：一键推送脚本（可选）</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fak3adm1n.github.io/2025/04/14/github-ssh/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&text=Github ssh-key配置与使用"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&title=Github ssh-key配置与使用"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&is_video=false&description=Github ssh-key配置与使用"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Github ssh-key配置与使用&body=Check out this article: https://fak3adm1n.github.io/2025/04/14/github-ssh/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&title=Github ssh-key配置与使用"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&title=Github ssh-key配置与使用"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&title=Github ssh-key配置与使用"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&title=Github ssh-key配置与使用"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fak3adm1n.github.io/2025/04/14/github-ssh/&name=Github ssh-key配置与使用&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fak3adm1n.github.io/2025/04/14/github-ssh/&t=Github ssh-key配置与使用"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2025-The_End
+        朝兮未闻道
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">Home</a></li><!--
+        --><!--
+          --><li><a href="/about/">About</a></li><!--
+        --><!--
+          --><li><a href="/archives/">Writing</a></li><!--
+        --><!--
+          --><li><a href="/eyes/">Eyes</a></li><!--
+        --><!--
+          --><li><a href="/search/">Search</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+      
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'fak3adm1n/blog-comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'utteranc';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
