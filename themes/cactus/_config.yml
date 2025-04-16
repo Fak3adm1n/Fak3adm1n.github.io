@@ -14,11 +14,12 @@ direction: ltr
 # navigation menu. Optionally, you can add translations for the 'Key' in
 # languages/*.yml
 nav:
-  home: /
-  about: /about/
-  articles: /archives/
-  Eyes: /eyes/ 
-  search: /search/
+  主页: /
+  关于: /about/
+  文章: /archives/
+  文字: /eyes/ 
+  卦: /gua/
+  搜索: /search/
   
 # 是否开启访问量统计功能(不蒜子)
 busuanzi:
