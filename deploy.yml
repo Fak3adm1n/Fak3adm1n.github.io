@@ -1,17 +1,19 @@
-name: Deploy Hexo to GitHub Pages
+name: Deploy Hexo Blog (Dual Domain)
 
 on:
   push:
     branches:
-      - master  # 如果你的默认分支是 master，就写 master
+      - master
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true  # 保证主题等子模块正常获取
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -19,14 +21,17 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: |
-          npm install -g hexo-cli
-          npm install
+        run: npm install
+
+      - name: Generate static files
+        run: npx hexo generate
+
+      - name: Add CNAME for GitHub Pages custom domain
+        run: echo 'fak3adm1n.github.io' > ./public/CNAME
 
       - name: Deploy to GitHub Pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npx hexo clean
-          npx hexo generate
-          npx hexo deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
