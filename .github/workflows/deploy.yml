@@ -1,31 +1,32 @@
-name: Deploy Hexo Blog
+name: Hexo Build & Deploy to GitHub Pages
 
 on:
-  push:
-    branches:
-      - master  # 或者你使用的其他分支名称
+          push:
+                      branches:
+                                    - master  # ← 注意这里改成了 master
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: true  # 关键！初始化子模块
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+                      jobs:
+                                build:
+                                            runs-on: ubuntu-latest
 
-      - name: Install dependencies
-        run: npm install
+                                                steps:
+                                                              - name: Checkout source
+                                                                        uses: actions/checkout@v3
 
-      - name: Generate static files
-        run: npx hexo generate
+                                                                              - name: Setup Node.js
+                                                                                        uses: actions/setup-node@v3
+                                                                                                with:
+                                                                                                                  node-version: '18'
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+                                                                                                                        - name: Install dependencies
+                                                                                                                                  run: npm install
+
+                                                                                                                                        - name: Generate static files
+                                                                                                                                                  run: npx hexo generate
+
+                                                                                                                                                        - name: Deploy to GitHub Pages
+                                                                                                                                                                  uses: peaceiris/actions-gh-pages@v3
+                                                                                                                                                                          with:
+                                                                                                                                                                                            github_token: ${{ secrets.GITHUB_TOKEN }}
+                                                                                                                                                                                                      publish_dir: ./public
+                                                                                                                                                                                                                publish_branch: gh-pages
