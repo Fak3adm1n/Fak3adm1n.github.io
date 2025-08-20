@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>愿君时月长吉</title>
+<style>
+
+
+html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;   /* 防止出现滚动条 */
+}
+
+    *{
+    margin: 0;
+    padding: 0;
+}
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    perspective: 1300px;
+    content: '';
+    z-index: -1;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: 
+        radial-gradient(ellipse at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%), /* 磨砂光斑 */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='paper' x='0%25' y='0%25' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' result='noise'/%3E%3CfeDiffuseLighting in='noise' lighting-color='%23f5f2ea' surfaceScale='1'%3E%3CfeDistantLight azimuth='45' elevation='60'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paper)'/%3E%3C/svg%3E"),
+        #f7f3e9; /* 宣纸底色 */
+      background-blend-mode: multiply, normal;
+    background-size: cover;
+    
+}
+
+/* 1. 声明 */
+@font-face {
+  font-family: 'MyFont';           /* 自定义名字，随便起 */
+  src: url('/古典宋.ttf') format('truetype'),
+  font-weight: normal;             /* 400 */
+  font-style: normal;              /* 非斜体 */
+}
+
+
+  #sign{
+  font-family :'MyFont';
+  color: black;
+  font-size: 15px;
+  position:fixed;
+  bottom:1px;
+  right:1px;
+  
+  }
+
+  h2{
+    z-index:1;
+    font-size: 30px;
+    color: #93b5cf;
+    font-family: 'MyFont', sans-serif;
+  }
+.texttwo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%);
+}
+.textone {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translateX(-50%);
+}
+.textthree {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translateX(-50%);
+}
+:root {
+    --margin-top: 0;
+    --margin-left: 0;
+    --animation-duration: 0s;
+    --animation-delay: 0s;
+}
+div {
+    transform-style: preserve-3d;
+}
+.word-box,
+.word-box .word{
+z-index:0;
+position: absolute;
+animation: rotY 0s linear infinite;
+animation-duration: var(--animation-duration);
+animation-delay: var(--animation-delay);
+}
+.word-box{
+    margin-top: var(--margin-top);
+}
+.word-box .word{
+    margin-left: var(--margin-left);
+}
+.word-box .word {
+    animation-duration: reverse;
+}
+@keyframes rotY {
+    to{
+        transform: rotateY(360deg);
+    }
+    
+}
+
+</style>
+  </head>
+  <body>
+    <div class="textone">
+      <h2>何幸同度七夕</h2>
+    </div>
+    <div class="texttwo">
+      <h2>愿君时月长吉</h2>
+    </div>
+    <div class="textthree">
+      <h1></h1>
+    </div>
+    <div class="container"></div>
+    <div id="sign">
+        <p>「颜放」为你展现.</p>
+    </div>
+<script>
+// poem
+var words=[
+    '伤心桥下春波绿',
+    '曾是惊鸿照影来',
+    '当年明月在',
+    '曾照彩云归',
+    '归去来兮',
+    '真堪偕隐',
+    '画船听雨眠',
+    '愿为江水',
+    '与君重逢',
+    '一日不见兮',
+    '思之若狂',
+    '柳絮空缱绻',
+    '南风知不知',
+    '我见青山多妩媚',
+    '料青山见我也应如是',
+    '取次花丛懒回顾',
+    '半缘修道半缘君',
+    '三笑徒然当一痴',
+    '人生若只如初见',
+    '徒余留明月忆往昔',
+    '借问人间知我者有几',
+    '此恨不关风与月',
+    '何幸与君逢',
+    '春蚕到死丝方尽',
+    '蜡炬成灰泪始干',
+    '今夜何夕',
+    '见此良人',
+    '愿我如星君如月',
+    '夜夜流光相皎洁',
+    '情不所起',
+    '一往而深',
+    '玲珑骰子安红豆',
+    '入骨相思知不知',
+    '多情只有春庭月',
+    '尤为离人照落花',
+    '若有知音见采',
+    '不辞唱遍阳春',
+    '休言半纸无多重',
+    '万斛离愁尽耐担',
+    '夜月一帘幽梦',
+    '和光同尘',
+    '杳霭流玉',
+    '月落星沉',
+    '霞姿月韵',
+    '喜上眉梢',
+    '醉后不知天在水',
+    '满船星梦压星河',
+    '落花人独立',
+    '微雨燕双飞',
+    '掬水月在手',
+    '弄花香满衣',
+    '夜深忽梦少年事',
+    '唯梦闲人不梦君',
+    '垆边人似月',
+    '皓腕凝霜雪',
+    '众里嫣然通一顾',
+    '人间颜色如尘土',
+    '若非群玉山头见',
+    '会向瑶台月下逢',
+    '沉鱼落雁鸟惊喧',
+    '羞花闭月花愁颤',
+    '解释春风无限恨',
+    '沉香亭北倚阑干'
+];
+function randomNum(min,max){
+    var num = (Math.random()*(max-min+1)+min).toFixed(2);
+    return num;
+}
+function init(){
+    let container = document.querySelector('.container');
+    let f = document.createDocumentFragment();
+    words.forEach(w=>{
+    let word_box = document.createElement('div');
+    let word = document.createElement('div');
+        word.innerText = w;
+        word.classList.add('word');
+        word.style.color = '#ec7696';
+        word.style.fontFamily = 'MyFont';
+        word.style.fontSize = '20px'
+        word_box.classList.add('word-box');
+        word_box.style.setProperty("--margin-top",randomNum(-40,20)+'vh');
+        word_box.style.setProperty("--margin-left",randomNum(6,35)+'vw');
+        word_box.style.setProperty("--animation-duration",randomNum(8,20)+'s');
+        word_box.style.setProperty("--animation-delay",randomNum(-20,0)+'s');
+        
+        word_box.appendChild(word);
+        f.appendChild(word_box);
+
+
+    })
+    container.appendChild(f);
+}
+window.addEventListener('load',init);
+let textone = document.querySelector('.textone').querySelector('h1');
+      let texttwo = document.querySelector('.texttwo').querySelector('h1');
+      let textthree = document.querySelector('.textthree').querySelector('h1');
+
+      setTimeout(function(){
+        textone.innerHTML = '愿君时月长吉';
+          textone.style.color = '#ec7696';
+          textone.style.fontFamily = 'MyFont'
+          texttwo.style.color = '#ec7696';
+          texttwo.style.fontFamily = 'MyFont'
+          textthree.style.color = '#ec7696';
+          textthree.style.fontFamily = 'MyFont'
+      },28000)
+
+</script>
+    
+    
+  </body>
+</html>
