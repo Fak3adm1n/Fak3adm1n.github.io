@@ -1,0 +1,59 @@
+---
+title: Fcm与clash联合使用导致hosts混乱的问题解决
+categories:
+- tech
+tags:
+- tech
+---
+# Termux & Telegram 无法联网问题排查与解决
+
+## 📝 问题表现
+- 开启 Clash 后：
+  - Termux 无法联网
+  - Telegram 无法连接服务器
+- 关闭 Clash → termux网络恢复正常
+
+---
+
+## 🔍 排查过程
+1. **怀疑 VPN 路由问题**
+   - 删除 tun0 路由 / 检查访问控制
+   - → 问题未解决
+
+2. **验证代理通道**
+   - `curl -x socks5h://127.0.0.1:7891 https://api.telegram.org`
+   - 返回 302 → Clash 能连通，但 DNS 异常
+
+3. **直接 IP 测试**
+   - `curl https://149.154.167.99`
+   - 报 SSL 证书错误 → 域名未正确解析
+
+4. **强制解析**
+   - `curl --resolve api.telegram.org:443:149.154.167.99 https://api.telegram.org`
+   - 成功返回 → 确认问题在 **DNS 污染 / Fake-IP 冲突**
+
+---
+
+## ✅ 解决方法
+- **调整 Clash DNS**
+  - 打开 DNS 功能
+  - 使用 `redir-host` 而不是 `fake-ip`
+  - 设置可信 DNS（1.1.1.1 / 8.8.8.8 等）
+
+- **Termux**
+  - 在 CFA 设置里勾选 Termux（或用“全部允许模式”）
+  - 确保走 Clash 网络通道
+
+- **Telegram**
+  - 通过规则确保流量走代理
+  - 正确 DNS 解析 → 不再出现 302 / SSL 错误
+
+---
+
+## 📌 总结
+问题根源：
+- Clash 的 Fake-IP 模式与系统 DNS 冲突，导致 Telegram 域名解析到错误 IP。
+
+最终解决：
+- **Clash 配置改用 redir-host 模式 + 正确 DNS**  
+- **保证 Termux/Telegram 都被包含在 VPN 访问控制中**
