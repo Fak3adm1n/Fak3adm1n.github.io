@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>Fcm与clash联合使用导致hosts混乱的问题解决</title>
+      <link href="/2025/09/06/fcmvpn/"/>
+      <url>/2025/09/06/fcmvpn/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Termux-Telegram-无法联网问题排查与解决"><a href="#Termux-Telegram-无法联网问题排查与解决" class="headerlink" title="Termux &amp; Telegram 无法联网问题排查与解决"></a>Termux &amp; Telegram 无法联网问题排查与解决</h1><h2 id="📝-问题表现"><a href="#📝-问题表现" class="headerlink" title="📝 问题表现"></a>📝 问题表现</h2><ul><li>开启 Clash 后：<ul><li>Termux 无法联网</li><li>Telegram 无法连接服务器</li></ul></li><li>关闭 Clash → termux网络恢复正常</li></ul><hr><h2 id="🔍-排查过程"><a href="#🔍-排查过程" class="headerlink" title="🔍 排查过程"></a>🔍 排查过程</h2><ol><li><p><strong>怀疑 VPN 路由问题</strong></p><ul><li>删除 tun0 路由 &#x2F; 检查访问控制</li><li>→ 问题未解决</li></ul></li><li><p><strong>验证代理通道</strong></p><ul><li><code>curl -x socks5h://127.0.0.1:7891 https://api.telegram.org</code></li><li>返回 302 → Clash 能连通，但 DNS 异常</li></ul></li><li><p><strong>直接 IP 测试</strong></p><ul><li><code>curl https://149.154.167.99</code></li><li>报 SSL 证书错误 → 域名未正确解析</li></ul></li><li><p><strong>强制解析</strong></p><ul><li><code>curl --resolve api.telegram.org:443:149.154.167.99 https://api.telegram.org</code></li><li>成功返回 → 确认问题在 <strong>DNS 污染 &#x2F; Fake-IP 冲突</strong></li></ul></li></ol><hr><h2 id="✅-解决方法"><a href="#✅-解决方法" class="headerlink" title="✅ 解决方法"></a>✅ 解决方法</h2><ul><li><p><strong>调整 Clash DNS</strong></p><ul><li>打开 DNS 功能</li><li>使用 <code>redir-host</code> 而不是 <code>fake-ip</code></li><li>设置可信 DNS（1.1.1.1 &#x2F; 8.8.8.8 等）</li></ul></li><li><p><strong>Termux</strong></p><ul><li>在 CFA 设置里勾选 Termux（或用“全部允许模式”）</li><li>确保走 Clash 网络通道</li></ul></li><li><p><strong>Telegram</strong></p><ul><li>通过规则确保流量走代理</li><li>正确 DNS 解析 → 不再出现 302 &#x2F; SSL 错误</li></ul></li></ul><hr><h2 id="📌-总结"><a href="#📌-总结" class="headerlink" title="📌 总结"></a>📌 总结</h2><p>问题根源：</p><ul><li>Clash 的 Fake-IP 模式与系统 DNS 冲突，导致 Telegram 域名解析到错误 IP。</li></ul><p>最终解决：</p><ul><li><strong>Clash 配置改用 redir-host 模式 + 正确 DNS</strong>  </li><li><strong>保证 Termux&#x2F;Telegram 都被包含在 VPN 访问控制中</strong></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> tech </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> tech </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>谪</title>
       <link href="/2025/08/03/lose/"/>
       <url>/2025/08/03/lose/</url>

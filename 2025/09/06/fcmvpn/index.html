@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Termux &amp; Telegram 无法联网问题排查与解决📝 问题表现 开启 Clash 后： Termux 无法联网 Telegram 无法连接服务器   关闭 Clash → termux网络恢复正常   🔍 排查过程 怀疑 VPN 路由问题  删除 tun0 路由 &#x2F; 检查访问控制 → 问题未解决   验证代理通道  curl -x socks5h:&#x2F;&#x2F;127.0.0.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fcm与clash联合使用导致hosts混乱的问题解决">
+<meta property="og:url" content="https://fak3adm1n.github.io/2025/09/06/fcmvpn/index.html">
+<meta property="og:site_name" content="一切都是为了Xv4n">
+<meta property="og:description" content="Termux &amp; Telegram 无法联网问题排查与解决📝 问题表现 开启 Clash 后： Termux 无法联网 Telegram 无法连接服务器   关闭 Clash → termux网络恢复正常   🔍 排查过程 怀疑 VPN 路由问题  删除 tun0 路由 &#x2F; 检查访问控制 → 问题未解决   验证代理通道  curl -x socks5h:&#x2F;&#x2F;127.0.0.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-06T20:31:50.500Z">
+<meta property="article:modified_time" content="2025-09-06T20:31:50.500Z">
+<meta property="article:author" content="朝兮未闻道">
+<meta property="article:tag" content="tech">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Fcm与clash联合使用导致hosts混乱的问题解决</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">主页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">文章</a></li><!--
+     --><!--
+       --><li><a href="/eyes/">文字</a></li><!--
+     --><!--
+       --><li><a href="/gua/">卦</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2025/08/03/lose/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fak3adm1n.github.io/2025/09/06/fcmvpn/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&text=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&title=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&is_video=false&description=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Fcm与clash联合使用导致hosts混乱的问题解决&body=Check out this article: https://fak3adm1n.github.io/2025/09/06/fcmvpn/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&title=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&title=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&title=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&title=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&name=Fcm与clash联合使用导致hosts混乱的问题解决&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&t=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Termux-Telegram-%E6%97%A0%E6%B3%95%E8%81%94%E7%BD%91%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-number">1.</span> <span class="toc-text">Termux &amp; Telegram 无法联网问题排查与解决</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9D-%E9%97%AE%E9%A2%98%E8%A1%A8%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">📝 问题表现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%8D-%E6%8E%92%E6%9F%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">🔍 排查过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9C%85-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">✅ 解决方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-%E6%80%BB%E7%BB%93"><span class="toc-number">1.4.</span> <span class="toc-text">📌 总结</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Fcm与clash联合使用导致hosts混乱的问题解决
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">朝兮未闻道</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-09-06T20:31:50.500Z" class="dt-published" itemprop="datePublished">2025-09-07</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/tech/">tech</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/tech/" rel="tag">tech</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="Termux-Telegram-无法联网问题排查与解决"><a href="#Termux-Telegram-无法联网问题排查与解决" class="headerlink" title="Termux &amp; Telegram 无法联网问题排查与解决"></a>Termux &amp; Telegram 无法联网问题排查与解决</h1><h2 id="📝-问题表现"><a href="#📝-问题表现" class="headerlink" title="📝 问题表现"></a>📝 问题表现</h2><ul>
+<li>开启 Clash 后：<ul>
+<li>Termux 无法联网</li>
+<li>Telegram 无法连接服务器</li>
+</ul>
+</li>
+<li>关闭 Clash → termux网络恢复正常</li>
+</ul>
+<hr>
+<h2 id="🔍-排查过程"><a href="#🔍-排查过程" class="headerlink" title="🔍 排查过程"></a>🔍 排查过程</h2><ol>
+<li><p><strong>怀疑 VPN 路由问题</strong></p>
+<ul>
+<li>删除 tun0 路由 &#x2F; 检查访问控制</li>
+<li>→ 问题未解决</li>
+</ul>
+</li>
+<li><p><strong>验证代理通道</strong></p>
+<ul>
+<li><code>curl -x socks5h://127.0.0.1:7891 https://api.telegram.org</code></li>
+<li>返回 302 → Clash 能连通，但 DNS 异常</li>
+</ul>
+</li>
+<li><p><strong>直接 IP 测试</strong></p>
+<ul>
+<li><code>curl https://149.154.167.99</code></li>
+<li>报 SSL 证书错误 → 域名未正确解析</li>
+</ul>
+</li>
+<li><p><strong>强制解析</strong></p>
+<ul>
+<li><code>curl --resolve api.telegram.org:443:149.154.167.99 https://api.telegram.org</code></li>
+<li>成功返回 → 确认问题在 <strong>DNS 污染 &#x2F; Fake-IP 冲突</strong></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="✅-解决方法"><a href="#✅-解决方法" class="headerlink" title="✅ 解决方法"></a>✅ 解决方法</h2><ul>
+<li><p><strong>调整 Clash DNS</strong></p>
+<ul>
+<li>打开 DNS 功能</li>
+<li>使用 <code>redir-host</code> 而不是 <code>fake-ip</code></li>
+<li>设置可信 DNS（1.1.1.1 &#x2F; 8.8.8.8 等）</li>
+</ul>
+</li>
+<li><p><strong>Termux</strong></p>
+<ul>
+<li>在 CFA 设置里勾选 Termux（或用“全部允许模式”）</li>
+<li>确保走 Clash 网络通道</li>
+</ul>
+</li>
+<li><p><strong>Telegram</strong></p>
+<ul>
+<li>通过规则确保流量走代理</li>
+<li>正确 DNS 解析 → 不再出现 302 &#x2F; SSL 错误</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="📌-总结"><a href="#📌-总结" class="headerlink" title="📌 总结"></a>📌 总结</h2><p>问题根源：</p>
+<ul>
+<li>Clash 的 Fake-IP 模式与系统 DNS 冲突，导致 Telegram 域名解析到错误 IP。</li>
+</ul>
+<p>最终解决：</p>
+<ul>
+<li><strong>Clash 配置改用 redir-host 模式 + 正确 DNS</strong>  </li>
+<li><strong>保证 Termux&#x2F;Telegram 都被包含在 VPN 访问控制中</strong></li>
+</ul>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">主页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">文章</a></li>
+        
+          <li><a href="/eyes/">文字</a></li>
+        
+          <li><a href="/gua/">卦</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Termux-Telegram-%E6%97%A0%E6%B3%95%E8%81%94%E7%BD%91%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E4%B8%8E%E8%A7%A3%E5%86%B3"><span class="toc-number">1.</span> <span class="toc-text">Termux &amp; Telegram 无法联网问题排查与解决</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9D-%E9%97%AE%E9%A2%98%E8%A1%A8%E7%8E%B0"><span class="toc-number">1.1.</span> <span class="toc-text">📝 问题表现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%8D-%E6%8E%92%E6%9F%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">1.2.</span> <span class="toc-text">🔍 排查过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9C%85-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">✅ 解决方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8C-%E6%80%BB%E7%BB%93"><span class="toc-number">1.4.</span> <span class="toc-text">📌 总结</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fak3adm1n.github.io/2025/09/06/fcmvpn/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&text=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&title=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&is_video=false&description=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Fcm与clash联合使用导致hosts混乱的问题解决&body=Check out this article: https://fak3adm1n.github.io/2025/09/06/fcmvpn/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&title=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&title=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&title=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&title=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&name=Fcm与clash联合使用导致hosts混乱的问题解决&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fak3adm1n.github.io/2025/09/06/fcmvpn/&t=Fcm与clash联合使用导致hosts混乱的问题解决"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2025-The_End
+        朝兮未闻道
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">主页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">文章</a></li><!--
+        --><!--
+          --><li><a href="/eyes/">文字</a></li><!--
+        --><!--
+          --><li><a href="/gua/">卦</a></li><!--
+        --><!--
+          --><li><a href="/search/">搜索</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+      
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'fak3adm1n/blog-comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'utteranc';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
