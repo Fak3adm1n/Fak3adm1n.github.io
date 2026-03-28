@@ -1,6 +1,6 @@
 ---
 title: Fcm与clash联用导致hosts混乱的问题解决
-time: 2025-09-10 00:01:12
+date: 2025-09-10 00:01:12
 categories:
 - tech
 tags:
