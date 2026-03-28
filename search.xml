@@ -5,8 +5,8 @@
     
     <entry>
       <title>Fcm与clash联合使用导致hosts混乱的问题解决</title>
-      <link href="/2025/12/25/fcmvpn/"/>
-      <url>/2025/12/25/fcmvpn/</url>
+      <link href="/2026/03/28/fcmvpn/"/>
+      <url>/2026/03/28/fcmvpn/</url>
       
         <content type="html"><![CDATA[<h1 id="Termux-Telegram-无法联网问题排查与解决"><a href="#Termux-Telegram-无法联网问题排查与解决" class="headerlink" title="Termux &amp; Telegram 无法联网问题排查与解决"></a>Termux &amp; Telegram 无法联网问题排查与解决</h1><h2 id="📝-问题表现"><a href="#📝-问题表现" class="headerlink" title="📝 问题表现"></a>📝 问题表现</h2><ul><li>开启 Clash 后：<ul><li>Termux 无法联网</li><li>Telegram 无法连接服务器</li></ul></li><li>关闭 Clash → termux网络恢复正常</li></ul><hr><h2 id="🔍-排查过程"><a href="#🔍-排查过程" class="headerlink" title="🔍 排查过程"></a>🔍 排查过程</h2><ol><li><p><strong>怀疑 VPN 路由问题</strong></p><ul><li>删除 tun0 路由 &#x2F; 检查访问控制</li><li>→ 问题未解决</li></ul></li><li><p><strong>验证代理通道</strong></p><ul><li><code>curl -x socks5h://127.0.0.1:7891 https://api.telegram.org</code></li><li>返回 302 → Clash 能连通，但 DNS 异常</li></ul></li><li><p><strong>直接 IP 测试</strong></p><ul><li><code>curl https://149.154.167.99</code></li><li>报 SSL 证书错误 → 域名未正确解析</li></ul></li><li><p><strong>强制解析</strong></p><ul><li><code>curl --resolve api.telegram.org:443:149.154.167.99 https://api.telegram.org</code></li><li>成功返回 → 确认问题在 <strong>DNS 污染 &#x2F; Fake-IP 冲突</strong></li></ul></li></ol><hr><h2 id="✅-解决方法"><a href="#✅-解决方法" class="headerlink" title="✅ 解决方法"></a>✅ 解决方法</h2><ul><li><p><strong>调整 Clash DNS</strong></p><ul><li>打开 DNS 功能</li><li>使用 <code>redir-host</code> 而不是 <code>fake-ip</code></li><li>设置可信 DNS（1.1.1.1 &#x2F; 8.8.8.8 等）</li></ul></li><li><p><strong>Termux</strong></p><ul><li>在 CFA 设置里勾选 Termux（或用“全部允许模式”）</li><li>确保走 Clash 网络通道</li></ul></li><li><p><strong>Telegram</strong></p><ul><li>通过规则确保流量走代理</li><li>正确 DNS 解析 → 不再出现 302 &#x2F; SSL 错误</li></ul></li></ul><hr><h2 id="📌-总结"><a href="#📌-总结" class="headerlink" title="📌 总结"></a>📌 总结</h2><p>问题根源：</p><ul><li>Clash 的 Fake-IP 模式与系统 DNS 冲突，导致 Telegram 域名解析到错误 IP。</li></ul><p>最终解决：</p><ul><li><strong>Clash 配置改用 redir-host 模式 + 正确 DNS</strong>  </li><li><strong>保证 Termux&#x2F;Telegram 都被包含在 VPN 访问控制中</strong></li></ul>]]></content>
       
@@ -29,6 +29,131 @@
     
     
     <entry>
+      <title>记梦</title>
+      <link href="/2026/03/27/dream327/"/>
+      <url>/2026/03/27/dream327/</url>
+      
+        <content type="html"><![CDATA[<p>学校里，我在宿舍，她发消息说她要出去一趟，问我一不一起。我对她没什么感觉，觉得她并不是那么好看，但我决定试一试，所以答应了。<br>接下来的画面类似一张游戏地图，从学校出发过一道桥后能到目的地。那是卖水产的，到地方后我问她来这干啥，她说她要买鱼回去养，我嘴里吐着鱼鳞，由于想逗逗她所以我语出惊人的说我都是来这买乌龟回去煲汤的，她啊了一声梦结束了。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> dream </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> dream </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>记梦</title>
+      <link href="/2026/03/26/dream326/"/>
+      <url>/2026/03/26/dream326/</url>
+      
+        <content type="html"><![CDATA[<p>独栋房子，我是客人，四周是模糊的，进门看到一个很温和的女生，衣服颜色记不清了，我从旋转楼梯一直往上走，心里想着日本地皮贵，所以楼梯设计成这样挺不错的。上到顶楼，外面在下大雨，用手接触雨水后我又从楼梯往下走。<br>画面转到餐厅，里面有一张大圆桌，我坐下来，吃了很多东西，不记得是什么了。吃完回到客厅，看到了那个女生和她的父母，她们看到我后笑着说话，我想开口发现自己不会日语，于是站定着在直接说中文还是说英语中犹豫，最后有人开口帮我脱困。<br>场景转到室外，我头晕的厉害，感觉天旋地转的，我在走着，从高处往下走，途径了一个古寺，里面非常破败，我心里想着它应该得到修缮而作为景点什么的，走到尽头发现接着下去的路太危险，只有几块摇摇欲坠的破木板，而下面是坚硬的水泥地，所以我打算绕路，途中遇到奶奶，我和奶奶说那边下不去，我换一边下。<br>还有一个梦是暴力的，是合作的，但是我忘记了。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> dream </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> dream </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>饿死的猫</title>
+      <link href="/2025/12/10/cat/"/>
+      <url>/2025/12/10/cat/</url>
+      
+        <content type="html"><![CDATA[<p>美好什么的，都离我而去吧。从来都是这样，一步难迈，用力过猛。真正想要的早已经弄丢了，而冲动指引的最后都破灭了。对我而言一切都只流于表面，哪怕最开始是深厚的，最后也会被我刮得只剩一层皮，然后破开。我想不通到底是什么，不对，我想通了。<br>承诺对我来说是随时都会不作数的，我厌恶，我恐惧这种满心期待的破灭，很多我想要的东西都不作数了，所以我急于求成。我只用最快的方式满足一切需求，省去中间的变数。所以在她表白的时候我倒错到宏大叙事里，贪婪的获取那种空虚被填实的感觉，而没有想着培养那段也许长久的感情；所以在她需要我的时候我选择进五排车队冲标，渴望着第二天五点就能拿到的荣誉象征，而不是找她展示我的存在；所以在她分享她的一切时我躲到现实的繁琐而游戏的虚拟里，填充毫无盼头的一天天，而不是给与她回应。是的，她们对我来说变数都太大了，我会在搭话之前就把所有坏结局都想一遍，为了不让我不愿发生之事发生，干脆就不要创造结果不要开始了，就算迫不得已也会极力逃避。<br>流于表面的是最安全的，我只是站在屋子外面，无论里面发生了什么，也不会殃及池鱼，最后拍拍手上的灰尘就好了。可每当遇到一些契机，勾起这些回忆，我倒才想起好结果来，然后后悔莫及。我真贱，美好什么的，从来都是我自己放弃的，最后又来怨天尤人。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> psycho </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> psycho </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>还债</title>
+      <link href="/2025/10/24/repay/"/>
+      <url>/2025/10/24/repay/</url>
+      
+        <content type="html"><![CDATA[<p>我对钱有很特殊的情感。小学时候爷爷每天中午都会给我5块钱，我拿钱买辣条买饮料，伙伴们会收到我的恩泽，所以他们认我当孩子王。我被人群包围，我有买想买的东西的自由。那会人人都玩王者荣耀绝地求生之类的游戏，父亲的手机我是绝不敢碰的，而母亲又在市里工作，一个月只回家几次，所以一个月内我拿到手机的次数寥寥无几，甚至要和母亲死缠烂打才能拿到，以至于奶奶都看不下去。我人生中第一个手机是爷爷买的，我只记得买手机的钱是我好多好多天的5块都凑不到的，我现在的手机卡都是爷爷的实名。我和爷爷散步而突发暴雨时爷爷用他的大衣裹住我把我抱回了家，我至今喜欢被包裹住而通过小孔观察外面。而我的父亲的严厉的，是一个典型的大他者的形象，他用暴力规训我而几乎没有给过我钱。母亲也不会给我自由支配钱的机会，虽然会给我买很多东西，但不是我选的。12岁以前我少有自由。<br>直到初中，我去县城上学，离家70公里，这时候父亲会每周给我70左右的零花钱，我开始逐渐脱离了对他的恐惧而渐渐开始厌恶吝啬的母亲。直到一次玩闹时母亲把我按在地上，她一直笑着用力按着我，我不断的说我很疼，直到我使劲挣脱而反过来按着她，打她骂她，她也没意识到她的错误，而计较我的不孝。我发现对她来说我有时候是一个玩具，所以我厌恶她。随着时间经过她越来越像个缺爱逼，不断的粘着我，要查我消费记录，要赖在我房间不走，要不断通过挑衅我来确认我的归属，所以我又一次打了她，我要说明我是独立的个体，我鄙视生小孩有恩论，但我确实欠她们抚养费，这是我之所以忍耐她的原因。<br>高中之后我越来越需要花钱，父亲给的钱也越来越多，他变得不再规训我，只要不犯法我啥都能干，前提是好好读书。由于需要的钱变多，而爷爷没有收入，基本上是姑姑和父亲给他打麻将之类的钱，所以爷爷也少有给钱的时候了，但当他有钱了，他会转我两三百，这个国庆返校前他也转了我300，而母亲却把握住我对钱的需求来为难我，想到此处我已经咬牙切齿，我想把我的拳头打到她的头上，她对我的支持是有条件的，而不像爷爷的宠溺，不像后来父亲逐渐给我的自由，她着魔般在任何时候打电话给我只为了知道我在做什么，反对我抽烟，反对我玩手机，从小学到高中她什么也没改变。<br>钱是对我干一切事情的支持态度的说明，说明给我自由。所以高三那个女生在我无人在意的生日给我88的红包后，我就开始对她的还债了，陪她写了几个星期的信，然弄巧成拙被认为我吊着她二而不欢而散。<br>我不能再收其他人恩惠般给我的钱了，我不要愧疚不要还债，哪怕是代表钱的其他东西。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> psycho </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> psyxho </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>幻</title>
+      <link href="/2025/09/29/imagine/"/>
+      <url>/2025/09/29/imagine/</url>
+      
+        <content type="html"><![CDATA[<p>掀开身上颇有重量的棉被，在如此冬夜，必然是有比温床更加吸引人的东西。这是他睡不着的第427个夜，寝室里的舍友或都睁着眼，他打开了大门，从走廊越下，倒在了泥土上，即使鼻子略微堵塞，但没有影响他闻到厚重的土腥味，爬起身，他看到了无星的黑夜里那些虎视眈眈的怪物。在他即将吓破胆而嚎叫奔走之前，有一只手手握住了他的手，他将视线转过去，看见了那只白的几乎透明的手。没来得及抬头看清面目，恍惚间两人就已经冲出了重围，待他抬头之际，那位却已消失不见。<br>他于是追着他认为正确的路一直往前走，以至于忘记了自己正所处深夜之中。他的意识逐渐消散，一切变得冥迷。再度清醒时，他已经坐在了教室里。<br>老师在讲课，同学在聊天，他抬头眯起眼睛但看不清老师的脸，也看不清黑板的字。随后视线变得愈发模糊，逐渐变黑。空心圆的连线，星云般的辉光，马路边卖西瓜的卡车，托马斯火车头，各种意义不明的画面在他的脑子里闪烁，直到一切在一个炎热多雨的夏天变得稳定。<br>他觉得他找到了拥有那双手的那个人，他在每天的梦里向她诉苦，给她分享她的日常，把梦中的交往的情节写在纸上，直到他发现她无法来到她身边，她永远不可能再次握住他的手，她永远不会全然的包容他，保护他。他的梦不再全是她，直至彻底无法联系。<br>可那个掀开被子的小孩子又做错了什么呢，为什么常常对她感到愧疚呢，为什么在现实的冲击短暂停止时还试图去寻回她呢？难道他们之间的示爱是相互试探对方的忠诚度吗？“我明明一再包容她，”他懊恼着，“可是为什么我只是耍了一次小孩脾性，她就永远的离我而去了？”<br>他想起梦中她曾说过的那个模糊的地址，他越过千里到达看到的不是辉煌的城堡，不是永乐的天堂，也不过是无趣的人间，酸甜苦辣无法刺激他的舌头，灼灼红日无法煎烤他的皮肤，人行莽莽万紫千红无法激活他大脑的冲动，他只觉得无趣，觉得空虚，于是他开始全心全意的做梦，一次次试图进入曾经的梦境，然被一次次拒绝，直到他失去了做梦的能力，他落魄的回到了棉被下。<br>直到他再次渴求找到那晚的那位，他极力的向外表达自己，一个个她进入他的梦境，又一个个都渐渐偏离那位，他一次次变得失望，他现在只想幻想，幻想那一夜，无论是梦还是现实，都无法承载他的渴望，但是他无法退出，也不能退出，他甚至只要存在着就一定会有希望，哪怕渺茫，他也不敢赌，他只能期待，他只能幻想，他只能留在可悲的现实个可怕的梦乡里。<br>他的眼角一直在脱皮，因为眼泪从此流下。<br>你在哪里？我一直在找你。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> psycho </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> psycho </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>谪</title>
       <link href="/2025/09/23/lose/"/>
       <url>/2025/09/23/lose/</url>
@@ -42,6 +167,50 @@
           
       </categories>
       
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>难以言说的</title>
+      <link href="/2025/09/18/hard2say/"/>
+      <url>/2025/09/18/hard2say/</url>
+      
+        <content type="html"><![CDATA[<p>Your special isn’t because of your face but because of you r the first girl who I liked and positively contacted.I was always a coward who afraid of the failure, afraid of you will leave me. It is all my fault right, amused by the outside of us and forgot to care your emotions.That is a goddamn game I was addicting that I escaped from school to play it all night long just for the ranking of Ekko.<br>You r speak-less and I can’t get the feedback.Now I think I am just a toy,a puppy which you can abandon anytime.I was so cheap right.I maddly thought that if I went to your city you will return to me.Wishful thinking totally broke my heart.You rejected me again and again that it became a crux which can echo my childhood trauma in my mind.If nothing unexpected happens,I’ll remember you all my life. Is this what u wanted?You showed me your cat and talk me about you experience.You showed me your clothe and try to fool me for fun.<br>But I just can’t forget u. Although remembering is useless.</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> psycho </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> psycho </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>看陀思妥耶夫所忆</title>
+      <link href="/2025/09/11/tstyf/"/>
+      <url>/2025/09/11/tstyf/</url>
+      
+        <content type="html"><![CDATA[<p>在只有几根枯草的绿化带旁边，在飞虫盘踞的路灯下，她还是说出了那句早已下定决心的话。<br>“我可以做你的女朋友吗？”<br>他瞬间想到了关系结成后可能面对的一切，同学的戏谑，老师的追捕，性格的不稳定等未知因素，在这之后，他想的才是自己终究本来是不喜欢她的。<br>即使他已经把礼物拿在了手中，即使他能感受到纸袋子的重量，可是他还是感到手足无措，所以他继续向前走着。他没有给出回应，他因害怕她没有得到回应而感到空落落的，就像一个亟待完成的任务已经到了死期。<br>“为什么？你喜欢我什么？”<br>他无法思考只能随口蹦出这句话，可是他心里明明极不情愿，他想到了一旦答应所带来的种种麻烦，无论是同学异样的注视还是老师可能带来的麻烦，都是他极不愿接受的。<br>“这我也很难说，因为初中的经历吧，我觉得你很潇洒，你的脸也称不上难看不是吗？”<br>她突然转头看着他，听到潇洒二字他笑了，因为他又一次被误解了，可是他从来都因自己不被理解而感到自豪，他只是看了一眼她灼热的目光，就被烧得不得不僵硬的看着前方，即使前方是没有灯光的食堂，即使食堂的玻璃后是没有灯光的篮球场，他只想要着应付过去，毕竟是死期。他决定给出一份真诚。<br>“我害怕，我害怕这种关系。”<br>“那你觉得应该是怎么样的关系呢？”<br>他不说话，他哪知道是怎么样的。她又开口。<br>“我可以抱一下你吗？”<br>他被吓到了，跳到了一边，他不得不撒谎了，他无法拒绝一个给他好意的人的要求，而表白当然是一个要求，一个对回答的要求，可是他由衷害怕一切后果。<br>“我不想别人碰到我，真的，我会很难受的。”<br>他害怕伤了她的心。<br>“真的，无论男女，无论什么关系！”<br>“那好吧。”<br>他们走到了女生宿舍楼下，迎面有刺眼的车灯，他看清了车上下来的人的脸，那是他曾经的班主任。他们在楼梯口周旋，他既要不让她伤心，又要全身而退。<br>“我们写信吧，每天换着人写，我给你解释清楚。”<br>他多想一切戛然而止，多想没有收下那个生日祝福，多想勇敢一点没有出现在那个路灯下，多想能不被自己病态的道德绑架，可是他总是想起没有人能回应他的好意。<br>后来她问我是什么牌子的垃圾袋，这么能装，然后删了我。。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> psycho </tag>
+            
+        </tags>
       
     </entry>
     
