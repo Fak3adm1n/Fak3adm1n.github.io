@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html<%= config.language ? " lang=" + config.language.substring(0, 2) : ""%>>
 <%- partial('_partial/head') %>
+
+<head>
+<style>
+  body {
+    background-image: url("/images/bg.jpg") !important;
+    background-size: cover !important;
+    background-attachment: fixed !important;
+    background-repeat: no-repeat !important;
+  }
+</style>
+
+</head>
 <body class="max-width mx-auto px3 <%- theme.direction -%>">
     <% if (is_post()) { %>
       <%- partial('_partial/post/actions_desktop') %>
