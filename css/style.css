@@ -494,7 +494,6 @@ body {
   flex-direction: column;
   min-height: 100%;
   overflow-wrap: break-word;
-  background: rgba(28,28,28,0.902) !important;
 }
 .content p {
   hyphens: auto;
