@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="#安装Arch Linux用termux配合tmoe安装脚本来安装Arch 下载Termuxhttps:&#x2F;&#x2F;github.com&#x2F;termux&#x2F;termux-app&#x2F;releases&#x2F;tag&#x2F;v0.118.3 下载tmoeawk -f &lt;(curl -L l.tmoe.me&#x2F;2.awk) Arch配置因为刚装好本地密钥库（keyring）太旧了，导致 Pacman 根本不信任新下载的软件包。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Termux安装Arch">
+<meta property="og:url" content="https://fak3adm1n.github.io/2026/08/22/arch/index.html">
+<meta property="og:site_name" content="一切都是为了Xv4n">
+<meta property="og:description" content="#安装Arch Linux用termux配合tmoe安装脚本来安装Arch 下载Termuxhttps:&#x2F;&#x2F;github.com&#x2F;termux&#x2F;termux-app&#x2F;releases&#x2F;tag&#x2F;v0.118.3 下载tmoeawk -f &lt;(curl -L l.tmoe.me&#x2F;2.awk) Arch配置因为刚装好本地密钥库（keyring）太旧了，导致 Pacman 根本不信任新下载的软件包。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-22T07:01:00.000Z">
+<meta property="article:modified_time" content="2026-08-22T07:25:23.962Z">
+<meta property="article:author" content="朝兮未闻道">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Termux安装Arch</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">主页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">文章</a></li><!--
+     --><!--
+       --><li><a href="/eyes/">文字</a></li><!--
+     --><!--
+       --><li><a href="/gua/">卦</a></li><!--
+     --><!--
+       --><li><a href="/search/">搜索</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2026/08/02/dream0802/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fak3adm1n.github.io/2026/08/22/arch/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fak3adm1n.github.io/2026/08/22/arch/&text=Termux安装Arch"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fak3adm1n.github.io/2026/08/22/arch/&title=Termux安装Arch"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fak3adm1n.github.io/2026/08/22/arch/&is_video=false&description=Termux安装Arch"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Termux安装Arch&body=Check out this article: https://fak3adm1n.github.io/2026/08/22/arch/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fak3adm1n.github.io/2026/08/22/arch/&title=Termux安装Arch"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fak3adm1n.github.io/2026/08/22/arch/&title=Termux安装Arch"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fak3adm1n.github.io/2026/08/22/arch/&title=Termux安装Arch"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fak3adm1n.github.io/2026/08/22/arch/&title=Termux安装Arch"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fak3adm1n.github.io/2026/08/22/arch/&name=Termux安装Arch&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fak3adm1n.github.io/2026/08/22/arch/&t=Termux安装Arch"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDTermux"><span class="toc-number">1.</span> <span class="toc-text">下载Termux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDtmoe"><span class="toc-number">2.</span> <span class="toc-text">下载tmoe</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Arch%E9%85%8D%E7%BD%AE"><span class="toc-number"></span> <span class="toc-text">Arch配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%81%E7%94%A8%E5%AF%86%E9%92%A5%E7%AD%BE%E5%90%8D%E6%A0%A1%E9%AA%8C"><span class="toc-number">1.</span> <span class="toc-text">禁用密钥签名校验</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BC%BA%E8%A1%8C%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88%E5%AF%86%E9%92%A5%E5%8C%85"><span class="toc-number"></span> <span class="toc-text">1. 强行安装最新版密钥包</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E9%87%8D%E6%96%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E5%B9%B6%E5%A1%AB%E5%85%85%E5%AE%98%E6%96%B9%E5%AF%86%E9%92%A5"><span class="toc-number"></span> <span class="toc-text">2. 重新初始化并填充官方密钥</span></a>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Termux安装Arch
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">朝兮未闻道</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2026-08-22T07:01:00.000Z" class="dt-published" itemprop="datePublished">2026-08-22</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fa-solid fa-archive"></i>
+        <a class="category-link" href="/categories/tech/">tech</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>#安装Arch Linux<br>用termux配合tmoe安装脚本来安装Arch</p>
+<h2 id="下载Termux"><a href="#下载Termux" class="headerlink" title="下载Termux"></a>下载Termux</h2><p><a target="_blank" rel="noopener" href="https://github.com/termux/termux-app/releases/tag/v0.118.3">https://github.com/termux/termux-app/releases/tag/v0.118.3</a></p>
+<h2 id="下载tmoe"><a href="#下载tmoe" class="headerlink" title="下载tmoe"></a>下载tmoe</h2><p><code>awk -f &lt;(curl -L l.tmoe.me/2.awk)</code></p>
+<h1 id="Arch配置"><a href="#Arch配置" class="headerlink" title="Arch配置"></a>Arch配置</h1><p>因为刚装好本地密钥库（keyring）太旧了，导致 Pacman 根本不信任新下载的软件包。但如果直接 pacman -S archlinux-keyring 更新密钥，Pacman 又会因为旧密钥校验不过去而拒绝下载它，陷入“先有鸡还是先有蛋”的死循环。</p>
+<h2 id="禁用密钥签名校验"><a href="#禁用密钥签名校验" class="headerlink" title="禁用密钥签名校验"></a>禁用密钥签名校验</h2><p><code>sed -i &#39;s/SigLevel    = .*/SigLevel = Never/g&#39; /etc/pacman.conf</code></p>
+<h1 id="1-强行安装最新版密钥包"><a href="#1-强行安装最新版密钥包" class="headerlink" title="1. 强行安装最新版密钥包"></a>1. 强行安装最新版密钥包</h1><p><code>pacman -Sy --noconfirm archlinux-keyring</code></p>
+<h1 id="2-重新初始化并填充官方密钥"><a href="#2-重新初始化并填充官方密钥" class="headerlink" title="2. 重新初始化并填充官方密钥"></a>2. 重新初始化并填充官方密钥</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pacman-key --init</span><br><span class="line">pacman-key --populate archlinux</span><br></pre></td></tr></table></figure>
+<p>改回<br><code>sed -i &#39;s/SigLevel    = .*/SigLevel = Required DatabaseOptional/g; s/SigLevel = Never/SigLevel = Required DatabaseOptional/g&#39; /etc/pacman.conf</code></p>
+
+  </div>
+</article>
+
+
+    <div class="blog-post-comments">
+        <div id="utterances_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">主页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">文章</a></li>
+        
+          <li><a href="/eyes/">文字</a></li>
+        
+          <li><a href="/gua/">卦</a></li>
+        
+          <li><a href="/search/">搜索</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDTermux"><span class="toc-number">1.</span> <span class="toc-text">下载Termux</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDtmoe"><span class="toc-number">2.</span> <span class="toc-text">下载tmoe</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Arch%E9%85%8D%E7%BD%AE"><span class="toc-number"></span> <span class="toc-text">Arch配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A6%81%E7%94%A8%E5%AF%86%E9%92%A5%E7%AD%BE%E5%90%8D%E6%A0%A1%E9%AA%8C"><span class="toc-number">1.</span> <span class="toc-text">禁用密钥签名校验</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%BC%BA%E8%A1%8C%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88%E5%AF%86%E9%92%A5%E5%8C%85"><span class="toc-number"></span> <span class="toc-text">1. 强行安装最新版密钥包</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E9%87%8D%E6%96%B0%E5%88%9D%E5%A7%8B%E5%8C%96%E5%B9%B6%E5%A1%AB%E5%85%85%E5%AE%98%E6%96%B9%E5%AF%86%E9%92%A5"><span class="toc-number"></span> <span class="toc-text">2. 重新初始化并填充官方密钥</span></a>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://fak3adm1n.github.io/2026/08/22/arch/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://fak3adm1n.github.io/2026/08/22/arch/&text=Termux安装Arch"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://fak3adm1n.github.io/2026/08/22/arch/&title=Termux安装Arch"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://fak3adm1n.github.io/2026/08/22/arch/&is_video=false&description=Termux安装Arch"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Termux安装Arch&body=Check out this article: https://fak3adm1n.github.io/2026/08/22/arch/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://fak3adm1n.github.io/2026/08/22/arch/&title=Termux安装Arch"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://fak3adm1n.github.io/2026/08/22/arch/&title=Termux安装Arch"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://fak3adm1n.github.io/2026/08/22/arch/&title=Termux安装Arch"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://fak3adm1n.github.io/2026/08/22/arch/&title=Termux安装Arch"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://fak3adm1n.github.io/2026/08/22/arch/&name=Termux安装Arch&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://fak3adm1n.github.io/2026/08/22/arch/&t=Termux安装Arch"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2025-2100
+        朝兮未闻道
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">主页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">文章</a></li><!--
+        --><!--
+          --><li><a href="/eyes/">文字</a></li><!--
+        --><!--
+          --><li><a href="/gua/">卦</a></li><!--
+        --><!--
+          --><li><a href="/search/">搜索</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+      
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+    <script type="text/javascript">
+      var utterances_repo = 'fak3adm1n/blog-comments';
+      var utterances_issue_term = 'pathname';
+      var utterances_label = 'utteranc';
+      var utterances_theme = 'github-dark';
+
+      (function(){
+          var script = document.createElement('script');
+
+          script.src = 'https://utteranc.es/client.js';
+          script.setAttribute('repo', utterances_repo);
+          script.setAttribute('issue-term', 'pathname');
+          script.setAttribute('label', utterances_label);
+          script.setAttribute('theme', utterances_theme);
+          script.setAttribute('crossorigin', 'anonymous');
+          script.async = true;
+          (document.getElementById('utterances_thread')).appendChild(script);
+      }());
+  </script>
+
+</body>
+</html>
