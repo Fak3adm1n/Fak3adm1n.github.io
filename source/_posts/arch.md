@@ -47,48 +47,33 @@ pacman -S --noconfirm archlinux-keyring
 
 直接运行官方脚本，脚本会在中途询问是否将默认 Shell 切换为 Zsh：
 
-```bash
-sh -c "$(curl -fsSL [https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh](https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh))"
-```
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 ---
 
 ### 第三阶段：下载美化插件与主题
 
-```bash
 # 1. 下载自动补全插件 (zsh-autosuggestions)
-git clone [https://github.com/zsh-users/zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 # 2. 下载语法高亮插件 (zsh-syntax-highlighting)
-git clone [https://github.com/zsh-users/zsh-syntax-highlightin##g.git](https://github.com/zsh-users/zsh-syntax-highlighting.git) ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 # 3. 下载 Powerlevel10k 现代主题
-git clone --depth=1 [https://github.com/romkatv/powerlevel10k.git](https://github.com/romkatv/powerlevel10k.git) ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-```
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 ---
 
 ### 第四阶段：配置 ~/.zshrc 并生效
 
-```bash
-# 1. 打开 Zsh 配置文件
-nano ~/.zshrc
+# 1. 自动替换主题为 Powerlevel10k
+sed -i 's/ZSH_THEME=".*"/ZSH_THEME="powerlevel10k\/powerlevel10k"/g' ~/.zshrc
 
-# -------------------------------------------------------------
-# 2. 修改主题项 (找到 ZSH_THEME)：
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# 2. 自动更新插件列表（开启 git、自动补全、语法高亮）
+sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' ~/.zshrc
 
-# 3. 修改插件列表 (找到 plugins=(...))，添加新下载的插件：
-plugins=(
-    git
-    zsh-autosuggestions
-    zsh-syntax-highlighting
-)
-# -------------------------------------------------------------
-
-# 4. 保存退出后，重载配置文件应用美化并触发 p10k 交互配置向导
+# 3. 重载配置文件应用美化并触发 p10k 交互配置向导
 source ~/.zshrc
-```
 
 ---
 
@@ -96,6 +81,4 @@ source ~/.zshrc
 
 如果后续想重新调整界面样式或图标，随时运行：
 
-```bash
 p10k configure
-```
