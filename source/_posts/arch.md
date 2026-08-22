@@ -19,11 +19,13 @@ tags:
 因为刚装好本地密钥库（keyring）太旧了，导致 Pacman 根本不信任新下载的软件包。但如果直接 pacman -S archlinux-keyring 更新密钥，Pacman 又会因为旧密钥校验不过去而拒绝下载它，陷入“先有鸡还是先有蛋”的死循环。
 ## 禁用密钥签名校验
 `sed -i 's/SigLevel    = .*/SigLevel = Never/g' /etc/pacman.conf`
+## 沙盒
+`sed -i 's/#DisableSandbox/DisableSandbox/g' /etc/pacman.conf`
 
-# 1. 强行安装最新版密钥包
+## 1. 强行安装最新版密钥包
 `pacman -Sy --noconfirm archlinux-keyring`
 
-# 2. 重新初始化并填充官方密钥
+## 2. 重新初始化并填充官方密钥
 ```
 pacman-key --init
 pacman-key --populate archlinux
