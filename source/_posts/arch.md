@@ -6,7 +6,7 @@ categories:
 tags:
 ---
 
-#安装Arch Linux
+# 安装Arch Linux
 用termux配合tmoe安装脚本来安装Arch
 
 ## 下载Termux
@@ -22,12 +22,12 @@ tags:
 ## 沙盒
 `sed -i 's/#DisableSandbox/DisableSandbox/g' /etc/pacman.conf`
 
-# 2. 初始化密钥环目录
+## 2. 初始化密钥环目录
 ```
 pacman-key --init
 pacman-key --populate archlinux
 ```
-# 3. 强行安装/更新 keyring
+## 3. 强行安装/更新 keyring
 `
 pacman -S --noconfirm archlinux-keyring
 `
@@ -35,13 +35,16 @@ pacman -S --noconfirm archlinux-keyring
 改回
 `sed -i 's/SigLevel    = .*/SigLevel = Required DatabaseOptional/g; s/SigLevel = Never/SigLevel = Required DatabaseOptional/g' /etc/pacman.conf`
 
-
-### 第二阶段：安装 Oh My Zsh 框架（交互模式）
+# Zsh
+### 第二阶段：安装 Oh My Zsh 框架（无交互模式）
 
 直接运行官方脚本，脚本会在中途询问是否将默认 Shell 切换为 Zsh：
 
 ```bash
-sh -c "$(curl -fsSL [https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh](https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh))"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+# 切换默认 Shell 为 Zsh
+chsh -s $(which zsh)
 ```
 
 ---
@@ -50,13 +53,13 @@ sh -c "$(curl -fsSL [https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/to
 
 ```bash
 # 1. 下载自动补全插件 (zsh-autosuggestions)
-git clone [https://github.com/zsh-users/zsh-autosuggestions](https://github.com/zsh-users/zsh-autosuggestions) ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestion ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 # 2. 下载语法高亮插件 (zsh-syntax-highlighting)
-git clone [https://github.com/zsh-users/zsh-syntax-highlighting.git](https://github.com/zsh-users/zsh-syntax-highlighting.git) ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 
 # 3. 下载 Powerlevel10k 现代主题
-git clone --depth=1 [https://github.com/romkatv/powerlevel10k.git](https://github.com/romkatv/powerlevel10k.git) ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 ```
 
 ---
@@ -83,3 +86,5 @@ source ~/.zshrc
 ```bash
 p10k configure
 ```
+
+avnc下载<https://github.com/gujjwal00/avnc/releases>
